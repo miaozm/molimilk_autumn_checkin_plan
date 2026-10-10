@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+
+<html class="w-full h-full overflow-hidden" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>茉莉奶白 · 点单</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<style>
+  html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  @keyframes popIn {
+    0% { transform: scale(0.9) translateY(12px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .animate-pop { animation: popIn 0.3s cubic-bezier(0.18, 0.9, 0.32, 1.25); }
+  .tab-active { background: #7B8B4A; color: #fff; }
+</style>
+<style id="imt-injected-styles">
+      /* 翻译加载器样式 */
+      .imt-loading-indicator {
+        vertical-align: middle !important;
+        width: 10px !important;
+        height: 10px !important;
+        display: inline-block !important;
+        margin: 0 4px !important;
+        border: 2px rgba(221, 244, 255, 0.6) solid !important;
+        border-top: 2px rgba(0, 0, 0, 0.375) solid !important;
+        border-left: 2px rgba(0, 0, 0, 0.375) solid !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        -webkit-animation: imt-loading-animation 0.6s infinite linear !important;
+        animation: imt-loading-animation 0.6s infinite linear !important;
+      }
+
+      @-webkit-keyframes imt-loading-animation {
+        from {
+          -webkit-transform: rotate(0deg);
+        }
+
+        to {
+          -webkit-transform: rotate(359deg);
+        }
+      }
+
+      @keyframes imt-loading-animation {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(359deg);
+        }
+      }
+      .se_imt_html {
+        height: 100%;
+      }
+      .se_imt_html body {
+        position: relative;
+        min-height: 100%;
+        top: 40px;
+      }
+      @media print {
+        #imt-webext {
+          display: none !important;
+        }
+      }
+    </style>
+</head>
+<body class="w-full h-full overflow-hidden flex items-center justify-center bg-[#E9E0D2]">
+<div class="relative w-full h-full max-w-[393px] max-h-[852px] bg-[#FDF8F1] overflow-hidden flex flex-col" id="phoneFrame">
+<div class="shrink-0 h-9 px-5 flex items-center justify-between text-[11px] font-semibold text-[#3A3226]">
+<span>14:52</span>
+<div class="flex items-center gap-1.5">
+<iconify-icon class="text-[13px]" icon="solar:signal-bold"></iconify-icon>
+<iconify-icon class="text-[13px]" icon="solar:wi-fi-router-bold"></iconify-icon>
+<iconify-icon class="text-[14px]" icon="solar:battery-charge-bold"></iconify-icon>
+</div>
+</div>
+<header class="shrink-0 px-4 pb-2 flex items-center justify-between">
+<a class="w-8 h-8 rounded-full bg-white grid place-items-center" href="index.html">
+<iconify-icon class="text-[18px] text-[#3A3226]" icon="solar:alt-arrow-left-linear"></iconify-icon>
+</a>
+<p class="text-[14px] font-extrabold text-[#3A3226]">点单</p>
+<span class="w-8"></span>
+</header>
+<main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden no-scrollbar pb-3">
+<!-- 取餐方式 -->
+<section class="px-4">
+<div class="rounded-[22px] bg-white px-3.5 py-3 flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-[#EEF2E2] grid place-items-center shrink-0">
+<iconify-icon class="text-[18px] text-[#7B8B4A]" icon="solar:shop-bold"></iconify-icon>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-[13px] font-bold text-[#3A3226]">万象城店 · 到店自取</p>
+<p class="text-[10px] text-[#A99B87] mt-0.5">预计 8 分钟出品 · 距您 320m</p>
+</div>
+<span class="rounded-full bg-[#F4F7EC] px-2.5 py-1 text-[10px] font-bold text-[#7B8B4A]">修改</span>
+</div>
+</section>
+<!-- 积分提示条 -->
+<section class="px-4 pt-3">
+<div class="rounded-[20px] bg-gradient-to-r from-[#FBE7C8] to-[#F6D8AE] px-3.5 py-3 flex items-center gap-2.5">
+<iconify-icon class="text-[18px] text-[#8A6A3D]" icon="solar:wallet-money-bold"></iconify-icon>
+<p class="flex-1 text-[11px] leading-relaxed text-[#6B4A22]">
+          你有 <span class="font-black text-[#B5503F]" id="orderPoints">14</span> 秋日积分，结算时可直接抵扣 <span class="font-black text-[#B5503F]" id="orderCash">¥14</span>
+</p>
+<a class="shrink-0 rounded-full bg-white/70 px-2.5 py-1 text-[10px] font-bold text-[#8A6A3D]" href="activity.html">去打卡</a>
+</div>
+</section>
+<!-- 分类 -->
+<section class="px-4 pt-3.5">
+<div class="flex gap-2 overflow-x-auto no-scrollbar">
+<button class="tab-active shrink-0 rounded-full px-3.5 py-1.5 text-[11px] font-bold bg-white text-[#8B7F6C]" onclick="switchTab('seasonal', this)">当季新品</button>
+<button class="shrink-0 rounded-full px-3.5 py-1.5 text-[11px] font-bold bg-white text-[#8B7F6C]" onclick="switchTab('milk', this)">奶白鲜茶</button>
+<button class="shrink-0 rounded-full px-3.5 py-1.5 text-[11px] font-bold bg-white text-[#8B7F6C]" onclick="switchTab('pure', this)">清爽纯茶</button>
+</div>
+</section>
+<!-- 当季新品 -->
+<section class="px-4 pt-3.5 space-y-3" id="list-seasonal">
+<article class="rounded-[22px] bg-white p-3 flex gap-3">
+<div class="relative w-[92px] h-[92px] shrink-0 rounded-[18px] bg-gradient-to-b from-[#F3E3CB] to-[#E3CDAB] overflow-hidden">
+<img alt="Chestnut milk tea topped with cream and chestnut crumble" class="w-full h-full object-cover" src="https://modao.cc/agent-py/media/generated_images/2026-10-08/93a8b03108b54d7093369b69bf17ddb2.jpg"/>
+<span class="absolute left-1.5 top-1.5 rounded-full bg-[#B5503F] px-1.5 py-0.5 text-[8.5px] font-bold text-white">新品</span>
+</div>
+<div class="flex-1 min-w-0 flex flex-col">
+<h3 class="text-[13.5px] font-bold text-[#3A3226]">栗子泥奶白</h3>
+<p class="mt-1 text-[10.5px] leading-relaxed text-[#A99B87]">现炒板栗泥 + 茉莉鲜奶茶底，秋冬暖手首选</p>
+<div class="mt-auto flex items-end justify-between pt-2">
+<p class="text-[14px] font-black text-[#B5503F]">¥19</p>
+<button class="rounded-full bg-[#7B8B4A] px-3 py-1 text-[11px] font-bold text-white" onclick="addToCart('栗子泥奶白', 19, true)">加入</button>
+</div>
+</div>
+</article>
+<article class="rounded-[22px] bg-white p-3 flex gap-3">
+<div class="relative w-[92px] h-[92px] shrink-0 rounded-[18px] bg-gradient-to-b from-[#EFEDD9] to-[#DAD6B6] overflow-hidden">
+<img alt="Osmanthus oolong milk tea with golden osmanthus petals" class="w-full h-full object-cover" src="https://modao.cc/agent-py/media/generated_images/2026-10-08/27eee596687a475b90ebb8c0e9599c27.jpg"/>
+<span class="absolute left-1.5 top-1.5 rounded-full bg-[#7B8B4A] px-1.5 py-0.5 text-[8.5px] font-bold text-white">限定</span>
+</div>
+<div class="flex-1 min-w-0 flex flex-col">
+<h3 class="text-[13.5px] font-bold text-[#3A3226]">桂花乌龙奶白</h3>
+<p class="mt-1 text-[10.5px] leading-relaxed text-[#A99B87]">金桂花现泡乌龙 + 鲜奶，清甜不腻</p>
+<div class="mt-auto flex items-end justify-between pt-2">
+<p class="text-[14px] font-black text-[#B5503F]">¥18</p>
+<button class="rounded-full bg-[#7B8B4A] px-3 py-1 text-[11px] font-bold text-white" onclick="addToCart('桂花乌龙奶白', 18, true)">加入</button>
+</div>
+</div>
+</article>
+<article class="rounded-[22px] bg-white p-3 flex gap-3">
+<div class="relative w-[92px] h-[92px] shrink-0 rounded-[18px] bg-gradient-to-b from-[#EFE0E3] to-[#DCC3CA] overflow-hidden">
+<img alt="Taro mochi milk tea with purple taro swirl" class="w-full h-full object-cover" src="https://modao.cc/agent-py/media/generated_images/2026-10-08/8a9940ae69be4876bc835d1de90ee248.jpg"/>
+</div>
+<div class="flex-1 min-w-0 flex flex-col">
+<h3 class="text-[13.5px] font-bold text-[#3A3226]">芋泥麻薯奶白</h3>
+<p class="mt-1 text-[10.5px] leading-relaxed text-[#A99B87]">手作芋泥 + 拉丝麻薯，嚼得到的小满足</p>
+<div class="mt-auto flex items-end justify-between pt-2">
+<p class="text-[14px] font-black text-[#B5503F]">¥20</p>
+<button class="rounded-full bg-[#7B8B4A] px-3 py-1 text-[11px] font-bold text-white" onclick="addToCart('芋泥麻薯奶白', 20, true)">加入</button>
+</div>
+</div>
+</article>
+</section>
+<!-- 奶白鲜茶 -->
+<section class="hidden px-4 pt-3.5 space-y-3" id="list-milk">
+<article class="rounded-[22px] bg-white p-3 flex gap-3">
+<div class="w-[92px] h-[92px] shrink-0 rounded-[18px] bg-gradient-to-b from-[#F2EBDD] to-[#E0D5C1] overflow-hidden">
+<img alt="Classic jasmine milk tea in signature cup" class="w-full h-full object-cover" src="https://modao.cc/agent-py/media/generated_images/2026-10-08/7be263040e7a41819585ef400b102164.jpg"/>
+</div>
+<div class="flex-1 min-w-0 flex flex-col">
+<h3 class="text-[13.5px] font-bold text-[#3A3226]">茉莉奶白（经典）</h3>
+<p class="mt-1 text-[10.5px] leading-relaxed text-[#A99B87]">招牌茉莉花茶底，一年卖出 3 千万杯</p>
+<div class="mt-auto flex items-end justify-between pt-2">
+<p class="text-[14px] font-black text-[#B5503F]">¥15</p>
+<button class="rounded-full bg-[#7B8B4A] px-3 py-1 text-[11px] font-bold text-white" onclick="addToCart('茉莉奶白（经典）', 15, false)">加入</button>
+</div>
+</div>
+</article>
+<article class="rounded-[22px] bg-white p-3 flex gap-3">
+<div class="w-[92px] h-[92px] shrink-0 rounded-[18px] bg-gradient-to-b from-[#EFE6DA] to-[#DCCEB9] overflow-hidden">
+<img alt="Roasted brown sugar milk tea with caramel layer" class="w-full h-full object-cover" src="https://modao.cc/agent-py/media/generated_images/2026-10-08/da9ac14e94f5414aac81d0b16b1cc5e3.jpg"/>
+</div>
+<div class="flex-1 min-w-0 flex flex-col">
+<h3 class="text-[13.5px] font-bold text-[#3A3226]">焦糖烤奶白</h3>
+<p class="mt-1 text-[10.5px] leading-relaxed text-[#A99B87]">现烤焦糖 + 鲜奶，焦香浓郁</p>
+<div class="mt-auto flex items-end justify-between pt-2">
+<p class="text-[14px] font-black text-[#B5503F]">¥19</p>
+<button class="rounded-full bg-[#7B8B4A] px-3 py-1 text-[11px] font-bold text-white" onclick="addToCart('焦糖烤奶白', 19, false)">加入</button>
+</div>
+</div>
+</article>
+</section>
+<!-- 清爽纯茶 -->
+<section class="hidden px-4 pt-3.5 space-y-3" id="list-pure">
+<article class="rounded-[22px] bg-white p-3 flex gap-3">
+<div class="w-[92px] h-[92px] shrink-0 rounded-[18px] bg-gradient-to-b from-[#E9F0E4] to-[#CFDCC4] overflow-hidden">
+<img alt="Cold brewed jasmine green tea with ice" class="w-full h-full object-cover" src="https://modao.cc/agent-py/media/generated_images/2026-10-08/b3dee93ca190453db4a9eed88b7d1550.jpg"/>
+</div>
+<div class="flex-1 min-w-0 flex flex-col">
+<h3 class="text-[13.5px] font-bold text-[#3A3226]">冷萃茉莉绿茶</h3>
+<p class="mt-1 text-[10.5px] leading-relaxed text-[#A99B87]">0 糖可选，冷萃 6 小时，回甘清冽</p>
+<div class="mt-auto flex items-end justify-between pt-2">
+<p class="text-[14px] font-black text-[#B5503F]">¥12</p>
+<button class="rounded-full bg-[#7B8B4A] px-3 py-1 text-[11px] font-bold text-white" onclick="addToCart('冷萃茉莉绿茶', 12, false)">加入</button>
+</div>
+</div>
+</article>
+<article class="rounded-[22px] bg-white p-3 flex gap-3">
+<div class="w-[92px] h-[92px] shrink-0 rounded-[18px] bg-gradient-to-b from-[#F0EDE0] to-[#DAD3BE] overflow-hidden">
+<img alt="Roasted buckwheat tea served warm" class="w-full h-full object-cover" src="https://modao.cc/agent-py/media/generated_images/2026-10-08/9a3984aab68c4726bb74d004074f3b35.jpg"/>
+</div>
+<div class="flex-1 min-w-0 flex flex-col">
+<h3 class="text-[13.5px] font-bold text-[#3A3226]">烘焙荞麦茶</h3>
+<p class="mt-1 text-[10.5px] leading-relaxed text-[#A99B87]">谷物烘焙香，热饮暖胃</p>
+<div class="mt-auto flex items-end justify-between pt-2">
+<p class="text-[14px] font-black text-[#B5503F]">¥13</p>
+<button class="rounded-full bg-[#7B8B4A] px-3 py-1 text-[11px] font-bold text-white" onclick="addToCart('烘焙荞麦茶', 13, false)">加入</button>
+</div>
+</div>
+</article>
+</section>
+<!-- 周边说明 -->
+<section class="px-4 pt-4 pb-2">
+</section>
+</main>
+<!-- 购物车栏 -->
+<div class="shrink-0 px-4 py-2.5 bg-white border-t border-[#F0E6D6] flex items-center gap-3">
+<div class="relative w-11 h-11 rounded-full bg-[#3A3226] grid place-items-center shrink-0">
+<iconify-icon class="text-[21px] text-white" icon="solar:cart-large-2-bold"></iconify-icon>
+<span class="hidden absolute -right-1 -top-1 min-w-[18px] h-[18px] px-1 rounded-full bg-[#B5503F] text-[10px] font-bold text-white grid place-items-center" id="cartBadge">0</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-[15px] font-black text-[#3A3226]">合计 <span id="cartTotal">¥0</span></p>
+<p class="text-[10px] text-[#A99B87]" id="cartHint">还没有选饮品，先挑一杯吧</p>
+</div>
+<button class="shrink-0 rounded-full bg-[#7B8B4A] px-5 py-2.5 text-[12px] font-extrabold text-white" onclick="openCheckout()">去结算</button>
+</div>
+<!-- 底部 Tab -->
+<nav class="shrink-0 bg-white/95 border-t border-[#F0E6D6] flex items-start justify-around pt-2 pb-3">
+<a class="flex flex-col items-center gap-0.5 w-16 text-[#B0A491]" href="index.html">
+<iconify-icon class="text-[21px]" icon="solar:home-2-linear"></iconify-icon>
+<span class="text-[10px]">首页</span>
+</a>
+<a class="flex flex-col items-center gap-0.5 w-16 text-[#7B8B4A]" href="order.html">
+<iconify-icon class="text-[21px]" icon="solar:cup-hot-bold"></iconify-icon>
+<span class="text-[10px] font-bold">点单</span>
+</a>
+<a class="flex flex-col items-center gap-0.5 w-16 text-[#B0A491]" href="activity.html">
+<iconify-icon class="text-[21px]" icon="solar:calendar-minimalistic-linear"></iconify-icon>
+<span class="text-[10px]">秋日打卡</span>
+</a>
+<a class="flex flex-col items-center gap-0.5 w-16 text-[#B0A491]" href="rewards.html">
+<iconify-icon class="text-[21px]" icon="solar:crown-linear"></iconify-icon>
+<span class="text-[10px]">会员中心</span>
+</a>
+</nav>
+<!-- 秋日奖励中心（免费券 / 积分） -->
+<!-- 结算弹窗（默认隐藏） -->
+<div class="hidden absolute inset-0 z-[60] items-end justify-center" id="checkoutModal">
+<div class="absolute inset-0 bg-[#3A3226]/55 backdrop-blur-[2px]" onclick="closeCheckout()"></div>
+<div class="relative w-full max-h-[88%] overflow-y-auto no-scrollbar rounded-t-[28px] bg-[#FFFDF8] px-5 pt-5 pb-5 animate-pop">
+<div class="flex items-center justify-between">
+<h3 class="text-[16px] font-black text-[#3A3226]">确认订单</h3>
+<button class="w-7 h-7 rounded-full bg-[#F2EDE3] grid place-items-center" onclick="closeCheckout()">
+<iconify-icon class="text-[17px] text-[#6B6152]" icon="solar:close-circle-linear"></iconify-icon>
+</button>
+</div>
+<ul class="mt-3.5 space-y-2.5" id="checkoutList"></ul>
+<!-- 当季新品免费券（未使用且本单可抵扣时才显示） -->
+<div class="mt-4 rounded-[20px] bg-[#FDF3E6] px-3.5 py-3" id="couponCard">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<iconify-icon class="text-[16px] text-[#D98A4E]" icon="solar:cup-hot-bold"></iconify-icon>
+<p class="text-[12.5px] font-bold text-[#3A3226]">当季新品免费券</p>
+</div>
+<button class="w-11 h-6 rounded-full bg-[#D6D0C2] relative transition-colors" id="couponSwitch" onclick="toggleCouponUse()">
+<span class="absolute left-0.5 top-0.5 w-5 h-5 rounded-full bg-white transition-transform" id="couponSwitchDot" style="transform:translateX(20px)"></span>
+</button>
+</div>
+<p class="mt-2 text-[10.5px] text-[#8A6A3D]" id="couponTip">结算时可用</p>
+</div>
+<div class="mt-4 rounded-[20px] bg-[#F4F7EC] px-3.5 py-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<iconify-icon class="text-[16px] text-[#7B8B4A]" icon="solar:wallet-money-bold"></iconify-icon>
+<p class="text-[12.5px] font-bold text-[#3A3226]">使用秋日积分抵扣</p>
+</div>
+<button class="w-11 h-6 rounded-full bg-[#D6D0C2] relative transition-colors" id="pointSwitch" onclick="togglePointUse()">
+<span class="absolute left-0.5 top-0.5 w-5 h-5 rounded-full bg-white transition-transform" id="pointSwitchDot"></span>
+</button>
+</div>
+<p class="mt-2 text-[10.5px] text-[#8B7F6C]" id="pointUseTip">可用 14 积分，可抵扣 ¥14（1 积分 = 1 元）</p>
+</div>
+<div class="mt-3.5 space-y-2 rounded-[20px] bg-white px-3.5 py-3">
+<div class="flex items-center justify-between text-[12px]">
+<span class="text-[#8B7F6C]">饮品金额</span>
+<span class="font-bold text-[#3A3226]" id="sumGoods">¥0</span>
+</div>
+<div class="hidden items-center justify-between text-[12px]" id="sumCouponRow">
+<span class="text-[#8B7F6C]">新品免费券</span>
+<span class="font-bold text-[#D98A4E]" id="sumCoupon">-¥0</span>
+</div>
+<div class="flex items-center justify-between text-[12px]">
+<span class="text-[#8B7F6C]">积分抵扣</span>
+<span class="font-bold text-[#7B8B4A]" id="sumDiscount">-¥0</span>
+</div>
+<div class="flex items-center justify-between border-t border-[#F2EDE3] pt-2 text-[13.5px]">
+<span class="font-bold text-[#3A3226]">实付</span>
+<span class="font-black text-[#B5503F]" id="sumPay">¥0</span>
+</div>
+</div>
+<div class="hidden mt-3.5 rounded-[20px] bg-[#F7EBEE] px-3.5 py-3" id="giftBox">
+<p class="text-[12px] font-bold text-[#B5503F]">🎁 已解锁周边赠送资格</p>
+<p class="mt-1 text-[10.5px] leading-relaxed text-[#8B6C6C]" id="giftBoxDesc">本单含当季新品，下单后将随单赠送秋日赠送周边 1 份（门店限量，先到先得）。</p>
+</div>
+<button class="mt-4 w-full h-10 rounded-full bg-[#7B8B4A] text-[13px] font-extrabold text-white" onclick="submitOrder()">提交订单</button>
+<p class="mt-2 text-center text-[10px] text-[#B9AB95]">提交即表示同意 <a class="text-[#7B8B4A] underline underline-offset-2" href="rules.html">《秋日打卡活动规则》</a></p>
+</div>
+</div>
+<!-- 下单结果提示（默认隐藏） -->
+<div class="hidden absolute left-1/2 bottom-24 -translate-x-1/2 z-[70] rounded-full bg-[#3A3226]/92 px-4 py-2.5 text-[11.5px] font-semibold text-white" id="toastBox">
+    已加入购物车
+  </div>
+</div>
+<script>
+  const MOLLY_KEY = 'molly_autumn_checkin_2026';
+  const EXTRA_KEY = 'molly_autumn_extra_2026';
+  const REWARD_STAGE_KEY = 'molly_autumn_reward_stage_2026';
+  const STOCK_KEY = 'molly_autumn_gift_stock_2026';
+  const STORE_STOCK_TOTAL = 100;
+  let cart = [];
+  let usePoints = false;
+  let useCoupon = false;
+  let toastTimer = null;
+
+  function loadRewardStage() {
+    try {
+      const raw = localStorage.getItem(REWARD_STAGE_KEY);
+      if (raw === 'live' || raw === 'pre') {
+        return raw;
+      }
+    } catch (err) {
+      /* 忽略 */
+    }
+    return 'pre';
+  }
+
+  function loadGiftStock() {
+    try {
+      const raw = localStorage.getItem(STOCK_KEY);
+      if (raw !== null) {
+        const value = parseInt(raw, 10);
+        if (!isNaN(value) && value >= 0 && value <= STORE_STOCK_TOTAL) {
+          return value;
+        }
+      }
+    } catch (err) {
+      /* 忽略 */
+    }
+    return STORE_STOCK_TOTAL;
+  }
+
+  function saveGiftStock(left) {
+    try {
+      localStorage.setItem(STOCK_KEY, String(left));
+    } catch (err) {
+      /* 忽略 */
+    }
+  }
+
+  function loadMollyState() {
+    try {
+      const raw = localStorage.getItem(MOLLY_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed.checkedDays === 'number' && typeof parsed.points === 'number') {
+          return parsed;
+        }
+      }
+    } catch (err) {
+      /* 忽略 */
+    }
+    return { checkedDays: 14, todayChecked: false, points: 14, lastDay: '' };
+  }
+
+  function loadExtras() {
+    try {
+      const raw = localStorage.getItem(EXTRA_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed) {
+          return { claimed15: !!parsed.claimed15, used15: !!parsed.used15, claimed30: !!parsed.claimed30 };
+        }
+      }
+    } catch (err) {
+      /* 忽略 */
+    }
+    return { claimed15: false, used15: false, claimed30: false };
+  }
+
+  /** 免费券是否仍可用：已领取且未使用过（同一张券只能使用一次） */
+  function couponAvailable(extras) {
+    return !!extras.claimed15 && !extras.used15;
+  }
+
+  function isNewProduct(name) {
+    const el = cart.find(function (item) { return item.name === name; });
+    return !!(el && el.isNew);
+  }
+
+  function cartHasNew() {
+    return cart.some(function (item) { return item.isNew; });
+  }
+
+  function switchTab(key, btn) {
+    ['seasonal', 'milk', 'pure'].forEach(function (k) {
+      const el = document.getElementById('list-' + k);
+      if (k === key) {
+        el.classList.remove('hidden');
+      } else {
+        el.classList.add('hidden');
+      }
+    });
+    const buttons = document.querySelectorAll('button[onclick^="switchTab"]');
+    buttons.forEach(function (b) {
+      b.classList.remove('tab-active');
+      b.classList.add('bg-white', 'text-[#8B7F6C]');
+    });
+    btn.classList.add('tab-active');
+    btn.classList.remove('bg-white', 'text-[#8B7F6C]');
+  }
+
+  function showToast(text) {
+    const box = document.getElementById('toastBox');
+    box.textContent = text;
+    box.classList.remove('hidden');
+    if (toastTimer) {
+      clearTimeout(toastTimer);
+    }
+    toastTimer = setTimeout(function () {
+      box.classList.add('hidden');
+    }, 1400);
+  }
+
+  function addToCart(name, price, isNew) {
+    const found = cart.find(function (item) { return item.name === name; });
+    if (found) {
+      found.qty += 1;
+    } else {
+      cart.push({ name: name, price: price, qty: 1, isNew: !!isNew });
+    }
+    renderCart();
+    showToast(name + ' 已加入购物车');
+  }
+
+  function goodsTotal() {
+    return cart.reduce(function (sum, item) { return sum + item.price * item.qty; }, 0);
+  }
+
+  /** 单一免费券用于单杯新品：取购物车内最低价的新品单价 */
+  function couponValue() {
+    let value = 0;
+    cart.forEach(function (item) {
+      if (item.isNew && (value === 0 || item.price < value)) {
+        value = item.price;
+      }
+    });
+    return value;
+  }
+
+  function cartCount() {
+    return cart.reduce(function (sum, item) { return sum + item.qty; }, 0);
+  }
+
+  function renderCart() {
+    const badge = document.getElementById('cartBadge');
+    const total = goodsTotal();
+    const count = cartCount();
+    document.getElementById('cartTotal').textContent = '¥' + total;
+    if (count > 0) {
+      badge.textContent = count;
+      badge.classList.remove('hidden');
+      document.getElementById('cartHint').textContent = '已选 ' + count + ' 件 · 可叠加积分抵扣';
+    } else {
+      badge.classList.add('hidden');
+      document.getElementById('cartHint').textContent = '还没有选饮品，先挑一杯吧';
+    }
+  }
+
+  function renderOrderStatus() {
+    const state = loadMollyState();
+    document.getElementById('orderPoints').textContent = state.points;
+    document.getElementById('orderCash').textContent = '¥' + state.points;
+    const tip = document.getElementById('orderGiftTip');
+    const giftLive = loadRewardStage() === 'live';
+    const stockLeft = loadGiftStock();
+    if (!giftLive) {
+      tip.textContent = '周边赠送将在活动第 30 天之后（10 月 15 日起）开放，当前显示「待解锁」，每店限定 100 份';
+      tip.className = 'mt-2.5 rounded-2xl bg-[#F7EBEE] px-3 py-2 text-[10.5px] font-semibold text-[#B5503F]';
+    } else if (stockLeft <= 0) {
+      tip.textContent = '万象城店秋日赠送周边已赠完（100 份已全部送出），可切换其他有余量的门店领取';
+      tip.className = 'mt-2.5 rounded-2xl bg-[#E7E1D4] px-3 py-2 text-[10.5px] font-semibold text-[#8B7F6C]';
+    } else if (state.checkedDays >= 30) {
+      tip.textContent = '已达 30 天打卡，本单含当季新品即赠秋日赠送周边 1 份（剩余 ' + stockLeft + ' 份，先到先得，赠完即止）';
+      tip.className = 'mt-2.5 rounded-2xl bg-[#EAF0DC] px-3 py-2 text-[10.5px] font-semibold text-[#5D6E33]';
+    } else {
+      tip.textContent = '当前已累计打卡 ' + state.checkedDays + ' 天，还差 ' + (30 - state.checkedDays) + ' 天可解锁周边赠送';
+      tip.className = 'mt-2.5 rounded-2xl bg-[#F7EBEE] px-3 py-2 text-[10.5px] font-semibold text-[#B5503F]';
+    }
+    updateRewardChips(state);
+  }
+
+  function updateRewardChips(state) {
+    const extras = loadExtras();
+    const couponChip = document.getElementById('couponChip');
+    if (extras.used15) {
+      // 券已使用并失效：下单区不再展示任何券信息
+      couponChip.classList.add('hidden');
+    } else if (extras.claimed15) {
+      couponChip.classList.remove('hidden');
+      couponChip.textContent = '🎫 当季新品免费券：可用';
+      couponChip.className = 'rounded-full bg-[#FDF3E6] px-2.5 py-1 text-[10px] font-bold text-[#D98A4E]';
+    } else if (state.checkedDays >= 15) {
+      couponChip.classList.remove('hidden');
+      couponChip.textContent = '🎫 当季新品免费券：可领取';
+      couponChip.className = 'rounded-full bg-[#FDF3E6] px-2.5 py-1 text-[10px] font-bold text-[#D98A4E]';
+    } else {
+      couponChip.classList.remove('hidden');
+      couponChip.textContent = '🎫 当季新品免费券：还差 ' + (15 - state.checkedDays) + ' 天';
+      couponChip.className = 'rounded-full bg-[#F2EDE3] px-2.5 py-1 text-[10px] font-bold text-[#A99B87]';
+    }
+    document.getElementById('pointsChip').textContent = '⭐ 秋日积分：' + state.points;
+  }
+
+  function setSwitch(btnId, dotId, on) {
+    const sw = document.getElementById(btnId);
+    const dot = document.getElementById(dotId);
+    if (on) {
+      sw.classList.remove('bg-[#D6D0C2]');
+      sw.classList.add('bg-[#7B8B4A]');
+      dot.style.transform = 'translateX(20px)';
+    } else {
+      sw.classList.add('bg-[#D6D0C2]');
+      sw.classList.remove('bg-[#7B8B4A]');
+      dot.style.transform = 'translateX(0)';
+    }
+  }
+
+  function renderCouponCard(state) {
+    const extras = loadExtras();
+    const card = document.getElementById('couponCard');
+    const sw = document.getElementById('couponSwitch');
+    const tip = document.getElementById('couponTip');
+    const hasNew = cartHasNew();
+
+    if (extras.used15) {
+      // 券已使用并失效：整体不再出现在结算界面
+      useCoupon = false;
+      card.className = 'hidden mt-4 rounded-[20px] bg-[#FDF3E6] px-3.5 py-3';
+      return;
+    }
+
+    if (!extras.claimed15) {
+      // 未领取：不可使用，引导去领取
+      useCoupon = false;
+      setSwitch('couponSwitch', 'couponSwitchDot', false);
+      sw.disabled = true;
+      card.className = 'mt-4 rounded-[20px] bg-[#FBF6EF] px-3.5 py-3 opacity-80';
+      sw.className = 'w-11 h-6 rounded-full bg-[#E7E1D4] relative cursor-not-allowed';
+      if (state.checkedDays >= 15) {
+        tip.textContent = '已满足 15 天打卡，请先到「会员中心 - 打卡奖励」领取当季新品免费券';
+      } else {
+        tip.textContent = '累计打卡满 15 天并在「会员中心 - 打卡奖励」领取后可用';
+      }
+    } else if (!hasNew) {
+      // 已领取但购物车内没有新品：券不适用于本单
+      useCoupon = false;
+      setSwitch('couponSwitch', 'couponSwitchDot', false);
+      sw.disabled = true;
+      card.className = 'mt-4 rounded-[20px] bg-[#FBF6EF] px-3.5 py-3 opacity-80';
+      sw.className = 'w-11 h-6 rounded-full bg-[#E7E1D4] relative cursor-not-allowed';
+      tip.textContent = '本单暂无「新品」商品，免费券仅可用于当季新品，不影响积分抵扣';
+    } else {
+      // 已领取且含新品：可切换使用
+      sw.disabled = false;
+      card.className = 'mt-4 rounded-[20px] bg-[#FDF3E6] px-3.5 py-3';
+      sw.className = 'w-11 h-6 rounded-full relative transition-colors';
+      setSwitch('couponSwitch', 'couponSwitchDot', useCoupon);
+      tip.textContent = useCoupon
+        ? '已选择使用免费券，将免费兑换 1 杯当季新品（不消耗积分）'
+        : '本单含当季新品，可开启免费券，免费兑换其中 1 杯';
+    }
+  }
+
+  function openCheckout() {
+    if (cart.length === 0) {
+      showToast('请先选择饮品');
+      return;
+    }
+    // 已领取且未使用、且本单含当季新品时，免费券默认开启
+    useCoupon = couponAvailable(loadExtras()) && cartHasNew();
+    const state = loadMollyState();
+    const list = document.getElementById('checkoutList');
+    list.innerHTML = '';
+    cart.forEach(function (item) {
+      const li = document.createElement('li');
+      li.className = 'flex items-center justify-between rounded-2xl bg-white px-3.5 py-2.5';
+      const left = document.createElement('div');
+      left.innerHTML = '<p class="text-[12.5px] font-bold text-[#3A3226]"></p><p class="text-[10px] text-[#A99B87] mt-0.5">'
+        + '¥' + item.price + ' × ' + item.qty + '</p>';
+      left.querySelector('p').textContent = item.name;
+      const right = document.createElement('span');
+      right.className = 'text-[12.5px] font-black text-[#B5503F]';
+      right.textContent = '¥' + (item.price * item.qty);
+      li.appendChild(left);
+      li.appendChild(right);
+      list.appendChild(li);
+    });
+
+    document.getElementById('pointUseTip').textContent =
+      '可用 ' + state.points + ' 积分，最多抵扣 ¥' + state.points + '（1 积分 = 1 元）';
+
+    const giftBox = document.getElementById('giftBox');
+    const giftLive = loadRewardStage() === 'live';
+    const stockLeft = loadGiftStock();
+    if (giftLive && stockLeft > 0 && state.checkedDays >= 30) {
+      giftBox.classList.remove('hidden');
+      document.getElementById('giftBoxDesc').textContent =
+        '本单含当季新品，下单后将随单赠送秋日赠送周边 1 份（本店剩余 ' + stockLeft + ' 份，先到先得，赠完即止）。';
+    } else {
+      giftBox.classList.add('hidden');
+    }
+
+    renderCouponCard(state);
+    updateSums();
+    const modal = document.getElementById('checkoutModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function closeCheckout() {
+    const modal = document.getElementById('checkoutModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  function toggleCouponUse() {
+    const extras = loadExtras();
+    if (!couponAvailable(extras) || !cartHasNew()) {
+      return;
+    }
+    useCoupon = !useCoupon;
+    renderCouponCard(loadMollyState());
+    updateSums();
+  }
+
+  function togglePointUse() {
+    usePoints = !usePoints;
+    const sw = document.getElementById('pointSwitch');
+    const dot = document.getElementById('pointSwitchDot');
+    if (usePoints) {
+      sw.classList.remove('bg-[#D6D0C2]');
+      sw.classList.add('bg-[#7B8B4A]');
+      dot.style.transform = 'translateX(20px)';
+    } else {
+      sw.classList.add('bg-[#D6D0C2]');
+      sw.classList.remove('bg-[#7B8B4A]');
+      dot.style.transform = 'translateX(0)';
+    }
+    updateSums();
+  }
+
+  function updateSums() {
+    const state = loadMollyState();
+    const goods = goodsTotal();
+    const couponOff = (useCoupon && couponAvailable(loadExtras())) ? Math.min(couponValue(), goods) : 0;
+    const afterCoupon = goods - couponOff;
+    const pointOff = usePoints ? Math.max(0, Math.min(state.points, afterCoupon)) : 0;
+    document.getElementById('sumGoods').textContent = '¥' + goods;
+    const couponRow = document.getElementById('sumCouponRow');
+    if (couponOff > 0) {
+      couponRow.classList.remove('hidden');
+      couponRow.classList.add('flex');
+      document.getElementById('sumCoupon').textContent = '-¥' + couponOff;
+    } else {
+      couponRow.classList.add('hidden');
+      couponRow.classList.remove('flex');
+    }
+    document.getElementById('sumDiscount').textContent = '-¥' + pointOff;
+    document.getElementById('sumPay').textContent = '¥' + (goods - couponOff - pointOff);
+  }
+
+  function submitOrder() {
+    if (cart.length === 0) {
+      return;
+    }
+    const goods = goodsTotal();
+    const state = loadMollyState();
+    const extras = loadExtras();
+    const orderHasNew = cartHasNew();
+    // 免费券：仅当已领取且未使用过、本单含新品时生效，不触碰积分
+    const couponOff = (useCoupon && couponAvailable(extras)) ? Math.min(couponValue(), goods) : 0;
+    const afterCoupon = goods - couponOff;
+    // 积分：仅抵扣剩余金额，不触碰免费券
+    const pointOff = usePoints ? Math.max(0, Math.min(state.points, afterCoupon)) : 0;
+    const usedCoupon = couponOff > 0;
+    if (usedCoupon) {
+      // 用券成功即核销：该券失效，之后结算界面不再出现
+      extras.used15 = true;
+      try {
+        localStorage.setItem(EXTRA_KEY, JSON.stringify(extras));
+      } catch (err) {
+        /* 忽略 */
+      }
+    }
+    const finalPay = goods - couponOff - pointOff;
+    // 积分抵扣后实付为 ¥0 时同样视为已下单，照常扣减积分
+    if (pointOff > 0) {
+      state.points = state.points - pointOff;
+      try {
+        localStorage.setItem(MOLLY_KEY, JSON.stringify(state));
+      } catch (err) {
+        /* 忽略 */
+      }
+    }
+    closeCheckout();
+    cart = [];
+    useCoupon = false;
+    // 开放赠送期间，含当季新品且已满 30 天的订单会消耗 1 份周边余量
+    const giftLive = loadRewardStage() === 'live';
+    const stockBefore = loadGiftStock();
+    const gaveGift = giftLive && stockBefore > 0 && state.checkedDays >= 30 && couponOff === 0 && orderHasNew;
+    if (gaveGift) {
+      saveGiftStock(stockBefore - 1);
+    }
+    renderCart();
+    renderOrderStatus();
+    if (usedCoupon && couponOff > 0) {
+      showToast('下单成功 · 免费券已核销兑换新品 1 杯，实付 ¥' + finalPay);
+    } else if (gaveGift) {
+      showToast('下单成功 · 已随单赠送秋日赠送周边 1 份，本店剩余 ' + (stockBefore - 1) + ' 份');
+    } else if (giftLive && state.checkedDays >= 30 && stockBefore <= 0) {
+      showToast('下单成功 · 本店周边已赠完，未能随单赠送');
+    } else if (pointOff > 0) {
+      showToast('下单成功 · 已抵扣 ¥' + pointOff + '，剩余积分 ' + state.points);
+    } else {
+      showToast('下单成功 · 预计 8 分钟出品');
+    }
+  }
+
+  window.addEventListener('load', function () {
+    renderCart();
+    renderOrderStatus();
+  });
+</script>
+<div id="imt-webext"></div></body><div id="imt-webext"></div></html>

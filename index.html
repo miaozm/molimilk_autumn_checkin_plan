@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html class="w-full h-full overflow-hidden" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>茉莉奶白 · 秋日点单</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<style>
+  html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  @keyframes popIn {
+    0% { transform: scale(0.88) translateY(10px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .animate-pop { animation: popIn 0.32s cubic-bezier(0.18, 0.9, 0.32, 1.25); }
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+  }
+  .animate-floaty { animation: floaty 3.2s ease-in-out infinite; }
+  @keyframes fadeUp {
+    from { transform: translateY(14px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .animate-fadeup { animation: fadeUp 0.45s ease-out both; }
+  @keyframes shine {
+    0% { transform: translateX(-120%); }
+    100% { transform: translateX(220%); }
+  }
+  .shine::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.55), rgba(255,255,255,0));
+    animation: shine 2.6s ease-in-out infinite;
+  }
+</style>
+<style id="imt-injected-styles">
+      /* 翻译加载器样式 */
+      .imt-loading-indicator {
+        vertical-align: middle !important;
+        width: 10px !important;
+        height: 10px !important;
+        display: inline-block !important;
+        margin: 0 4px !important;
+        border: 2px rgba(221, 244, 255, 0.6) solid !important;
+        border-top: 2px rgba(0, 0, 0, 0.375) solid !important;
+        border-left: 2px rgba(0, 0, 0, 0.375) solid !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        -webkit-animation: imt-loading-animation 0.6s infinite linear !important;
+        animation: imt-loading-animation 0.6s infinite linear !important;
+      }
+
+      @-webkit-keyframes imt-loading-animation {
+        from {
+          -webkit-transform: rotate(0deg);
+        }
+
+        to {
+          -webkit-transform: rotate(359deg);
+        }
+      }
+
+      @keyframes imt-loading-animation {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(359deg);
+        }
+      }
+      .se_imt_html {
+        height: 100%;
+      }
+      .se_imt_html body {
+        position: relative;
+        min-height: 100%;
+        top: 40px;
+      }
+      @media print {
+        #imt-webext {
+          display: none !important;
+        }
+      }
+    </style>
+</head>
+<body class="w-full h-full overflow-hidden flex items-center justify-center bg-[#E9E0D2] is-mb-ai-setting">
+<div class="relative w-full h-full max-w-[393px] max-h-[852px] bg-[#FDF8F1] overflow-hidden flex flex-col" id="phoneFrame">
+<!-- 小程序状态栏 -->
+<div class="shrink-0 h-9 px-5 flex items-center justify-between text-[11px] font-semibold text-[#3A3226] bg-[#F7EFE0]">
+<span>14:52</span>
+<div class="flex items-center gap-1.5">
+<iconify-icon class="text-[13px]" icon="solar:signal-bold"></iconify-icon>
+<iconify-icon class="text-[13px]" icon="solar:wi-fi-router-bold"></iconify-icon>
+<iconify-icon class="text-[14px]" icon="solar:battery-charge-bold"></iconify-icon>
+</div>
+</div>
+<!-- 小程序导航栏 -->
+<header class="shrink-0 px-4 pb-2 pt-1 flex items-center justify-between bg-[#F7EFE0]">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#7B8B4A] grid place-items-center text-white text-[12px] font-black">茉</div>
+<span class="text-[15px] font-extrabold text-[#3A3226] tracking-wide">茉莉奶白</span>
+</div>
+<div class="flex items-center gap-1 rounded-full border border-[#DDD1BE] bg-white/60 px-1 py-1">
+<iconify-icon class="text-[15px] text-[#6B6152]" icon="solar:menu-dots-linear"></iconify-icon>
+<span class="w-[1px] h-3.5 bg-[#DDD1BE]"></span>
+<iconify-icon class="text-[15px] text-[#6B6152]" icon="solar:target-linear"></iconify-icon>
+</div>
+</header>
+<!-- 主内容滚动区 -->
+<main class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden no-scrollbar bg-[#FDF8F1]">
+<!-- 门店信息 -->
+<section class="px-4 pt-3">
+<div class="flex items-center justify-between rounded-2xl bg-white px-3.5 py-3 shadow-[0_6px_18px_-12px_rgba(90,70,40,0.45)]">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-9 h-9 rounded-xl bg-[#EEF2E2] grid place-items-center shrink-0">
+<iconify-icon class="text-[18px] text-[#7B8B4A]" icon="solar:map-point-bold"></iconify-icon>
+</div>
+<div class="min-w-0">
+<p class="text-[13px] font-bold text-[#3A3226] truncate">茉莉奶白 · 万象城店</p>
+<p class="text-[10px] text-[#A99B87] mt-0.5">距您 320m · 营业中至 22:00</p>
+</div>
+</div>
+<button class="shrink-0 text-[11px] font-bold text-[#7B8B4A] flex items-center gap-0.5">
+          切换门店
+          <iconify-icon class="text-[13px]" icon="solar:alt-arrow-right-linear"></iconify-icon>
+</button>
+</div>
+</section>
+<!-- 搜索 -->
+<section class="px-4 pt-3">
+<div class="flex items-center gap-2 rounded-full bg-white px-4 h-10">
+<iconify-icon class="text-[16px] text-[#BBAE99]" icon="solar:magnifer-linear"></iconify-icon>
+<span class="text-[12px] text-[#BBAE99]">搜索「栗子奶白」等当季新品</span>
+</div>
+</section>
+<!-- 品牌主视觉卡 -->
+<section class="px-4 pt-3.5">
+<div class="relative overflow-hidden rounded-[26px] bg-gradient-to-br from-[#8E9C5B] via-[#7B8B4A] to-[#5F6E36] px-5 py-5">
+<div class="absolute -right-6 -top-8 w-32 h-32 rounded-full bg-white/10"></div>
+<div class="absolute right-10 bottom-0 w-16 h-16 rounded-full bg-white/5"></div>
+<iconify-icon class="absolute right-4 top-4 text-[64px] text-white/15" icon="solar:leaf-bold"></iconify-icon>
+<div class="relative">
+<p class="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-1 text-[10px] font-semibold text-white">
+<iconify-icon class="text-[12px]" icon="solar:stars-bold"></iconify-icon>
+            2026 秋季限定
+          </p>
+<h1 class="mt-2.5 text-[21px] font-black text-white leading-snug">
+            栗子与桂花的秋天<br/>上市了
+          </h1>
+<p class="mt-1.5 text-[11px] text-white/80">当季鲜奶 + 现炒栗子泥，暖手也暖心</p>
+<a class="mt-4 inline-flex items-center gap-1 rounded-full bg-[#FDF8F1] px-3.5 py-1.5 text-[11px] font-extrabold text-[#5F6E36]" href="order.html">
+            去点单
+            <iconify-icon class="text-[12px]" icon="solar:alt-arrow-right-bold"></iconify-icon>
+</a>
+</div>
+</div>
+</section>
+<!-- 点单方式 -->
+<section class="px-4 pt-3">
+<div class="grid grid-cols-2 gap-3">
+<a class="rounded-2xl bg-white px-3.5 py-3.5 flex items-center gap-2.5" href="order.html">
+<div class="w-9 h-9 rounded-full bg-[#FDF1E3] grid place-items-center">
+<iconify-icon class="text-[18px] text-[#D98A4E]" icon="solar:shop-bold"></iconify-icon>
+</div>
+<div>
+<p class="text-[13px] font-bold text-[#3A3226]">到店自取</p>
+<p class="text-[10px] text-[#A99B87] mt-0.5">约 8 分钟出品</p>
+</div>
+</a>
+<a class="rounded-2xl bg-white px-3.5 py-3.5 flex items-center gap-2.5" href="order.html">
+<div class="w-9 h-9 rounded-full bg-[#EEF2E2] grid place-items-center">
+<iconify-icon class="text-[18px] text-[#7B8B4A]" icon="solar:scooter-bold"></iconify-icon>
+</div>
+<div>
+<p class="text-[13px] font-bold text-[#3A3226]">外送到家</p>
+<p class="text-[10px] text-[#A99B87] mt-0.5">3km 内 30 分钟</p>
+</div>
+</a>
+</div>
+</section>
+<!-- 秋日打卡活动入口 -->
+<section class="px-4 pt-3.5">
+<button class="relative w-full overflow-hidden rounded-[24px] bg-gradient-to-r from-[#FBE7C8] to-[#F6D8AE] px-4 py-4 text-left" onclick="openActivityModal()">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-2xl bg-white/70 grid place-items-center shrink-0 overflow-hidden">
+<img alt="Molly Tea autumn mascot holding a basket of berries" class="w-full h-full object-cover" src="https://modao.cc/agent-py/media/generated_images/2026-10-08/74f6811362004707b763426a9ea33a0a.png"/>
+</div>
+<div class="min-w-0 flex-1">
+<p class="text-[14px] font-black text-[#6B4A22]">30 日秋日打卡计划</p>
+<p class="text-[11px] text-[#8A6A3D] mt-0.5">9.15 - 10.31 · 每日打卡 +1 积分 · 1 积分抵 1 元</p>
+</div>
+<span class="shrink-0 inline-flex items-center gap-1 rounded-full bg-[#7B8B4A] px-3 py-1 text-[10.5px] font-bold text-white">
+            去打卡
+          </span>
+</div>
+<div class="mt-3 flex items-center gap-2">
+<div class="flex-1 h-1.5 rounded-full bg-white/70 overflow-hidden">
+<div class="h-full w-[47%] rounded-full bg-[#D98A4E]"></div>
+</div>
+<span class="text-[10px] font-bold text-[#8A6A3D]">已进行 14/30 天</span>
+</div>
+</button>
+</section>
+<!-- 当季新品 -->
+<section class="pt-5">
+<div class="px-4 flex items-baseline justify-between">
+<h2 class="text-[15px] font-black text-[#3A3226]">当季新品</h2>
+<a class="text-[11px] text-[#A99B87] flex items-center gap-0.5" href="order.html">
+          全部
+          <iconify-icon class="text-[12px]" icon="solar:alt-arrow-right-linear"></iconify-icon>
+</a>
+</div>
+<div class="mt-3 flex gap-3 overflow-x-auto no-scrollbar px-4 pb-1">
+<article class="w-[136px] shrink-0">
+<div class="relative h-[130px] rounded-2xl bg-gradient-to-b from-[#F3E3CB] to-[#E6D2B4] overflow-hidden">
+<img alt="Chestnut milk tea with cream top in autumn cup" class="w-full h-full object-cover" src="https://modao.cc/agent-py/media/generated_images/2026-10-08/4bd4fe3032004b3ba5d3ee2457122b84.jpg"/>
+<span class="absolute left-2 top-2 rounded-full bg-[#B5503F] px-2 py-0.5 text-[9px] font-bold text-white">热卖 No.1</span>
+</div>
+<p class="mt-2 text-[12px] font-bold text-[#3A3226]">栗子泥奶白</p>
+<p class="text-[10px] text-[#A99B87]">现炒板栗 · 中杯</p>
+<p class="mt-1 text-[13px] font-black text-[#B5503F]">¥19</p>
+</article>
+<article class="w-[136px] shrink-0">
+<div class="relative h-[130px] rounded-2xl bg-gradient-to-b from-[#EFEDD9] to-[#DCD9BC] overflow-hidden">
+<img alt="Osmanthus oolong milk tea with golden topping" class="w-full h-full object-cover" src="https://modao.cc/agent-py/media/generated_images/2026-10-08/a6617675a37946f3b4120f0ffbce6e06.jpg"/>
+<span class="absolute left-2 top-2 rounded-full bg-[#7B8B4A] px-2 py-0.5 text-[9px] font-bold text-white">秋季限定</span>
+</div>
+<p class="mt-2 text-[12px] font-bold text-[#3A3226]">桂花乌龙奶白</p>
+<p class="text-[10px] text-[#A99B87]">金桂花 · 大杯</p>
+<p class="mt-1 text-[13px] font-black text-[#B5503F]">¥18</p>
+</article>
+<article class="w-[136px] shrink-0">
+<div class="relative h-[130px] rounded-2xl bg-gradient-to-b from-[#EFE0E3] to-[#DCC7CD] overflow-hidden">
+<img alt="Taro mochi milk tea in pastel cup" class="w-full h-full object-cover" src="https://modao.cc/agent-py/media/generated_images/2026-10-08/b35d346f8dbb48af82a737f091cf9b02.jpg"/>
+</div>
+<p class="mt-2 text-[12px] font-bold text-[#3A3226]">芋泥麻薯奶白</p>
+<p class="text-[10px] text-[#A99B87]">手作芋泥 · 中杯</p>
+<p class="mt-1 text-[13px] font-black text-[#B5503F]">¥20</p>
+</article>
+</div>
+</section>
+<!-- 门店热销榜 -->
+<section class="px-4 pt-5">
+<div class="rounded-[22px] bg-white px-4 py-4">
+<div class="flex items-center gap-2">
+<iconify-icon class="text-[16px] text-[#D98A4E]" icon="solar:fire-bold"></iconify-icon>
+<h2 class="text-[14px] font-black text-[#3A3226]">万象城店热销榜</h2>
+<span class="ml-auto text-[10px] text-[#A99B87]">每小时更新</span>
+</div>
+<ul class="mt-3 space-y-3">
+<li class="flex items-center gap-3">
+<span class="w-5 text-[13px] font-black text-[#B5503F]">1</span>
+<span class="flex-1 text-[12.5px] font-semibold text-[#3A3226]">栗子泥奶白</span>
+<span class="text-[10px] text-[#A99B87]">月售 1286</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="w-5 text-[13px] font-black text-[#D98A4E]">2</span>
+<span class="flex-1 text-[12.5px] font-semibold text-[#3A3226]">桂花乌龙奶白</span>
+<span class="text-[10px] text-[#A99B87]">月售 964</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="w-5 text-[13px] font-black text-[#A99B87]">3</span>
+<span class="flex-1 text-[12.5px] font-semibold text-[#3A3226]">茉莉奶白（经典）</span>
+<span class="text-[10px] text-[#A99B87]">月售 812</span>
+</li>
+</ul>
+</div>
+</section>
+<!-- 会员卡 -->
+<section class="px-4 pt-3.5 pb-6">
+<div class="rounded-[22px] bg-[#3A3226] px-4 py-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[#E9B44C] grid place-items-center shrink-0">
+<iconify-icon class="text-[20px] text-[#3A3226]" icon="solar:crown-bold"></iconify-icon>
+</div>
+<div class="flex-1">
+<p class="text-[13px] font-bold text-white">我的秋日积分：<span class="text-[#E9B44C]" id="homePoints">14</span> 分</p>
+<p class="text-[10px] text-white/60 mt-0.5">1 积分 = 1 元，下单可直接抵扣</p>
+</div>
+<a class="shrink-0 rounded-full bg-white/15 px-3 py-1 text-[10.5px] font-bold text-white" href="rewards.html">查看明细</a>
+</div>
+<p class="mt-4 text-center text-[10px] text-[#C4B8A5]">茉莉奶白 · 让每一杯都有温度</p>
+</section>
+</main>
+<!-- 底部 Tab -->
+<nav class="shrink-0 bg-white/95 border-t border-[#F0E6D6] flex items-start justify-around pt-2 pb-3">
+<a class="flex flex-col items-center gap-0.5 w-16 text-[#7B8B4A]" href="index.html">
+<iconify-icon class="text-[21px]" icon="solar:home-2-bold"></iconify-icon>
+<span class="text-[10px] font-bold">首页</span>
+</a>
+<a class="flex flex-col items-center gap-0.5 w-16 text-[#B0A491]" href="order.html">
+<iconify-icon class="text-[21px]" icon="solar:cup-hot-linear"></iconify-icon>
+<span class="text-[10px]">点单</span>
+</a>
+<a class="flex flex-col items-center gap-0.5 w-16 text-[#B0A491]" href="activity.html">
+<iconify-icon class="text-[21px]" icon="solar:calendar-minimalistic-linear"></iconify-icon>
+<span class="text-[10px]">秋日打卡</span>
+</a>
+<a class="flex flex-col items-center gap-0.5 w-16 text-[#B0A491]" href="rewards.html">
+<iconify-icon class="text-[21px]" icon="solar:crown-linear"></iconify-icon>
+<span class="text-[10px]">会员中心</span>
+</a>
+</nav>
+<!-- 活动弹窗（默认隐藏） -->
+<div class="absolute inset-0 z-50 items-end justify-center flex" id="activityModal">
+<div class="absolute inset-0 bg-[#3A3226]/55 backdrop-blur-[2px]" onclick="closeActivityModal()" style="margin: 0px 20px;"></div>
+<div class="relative w-full max-h-[92%] overflow-hidden rounded-t-[30px] bg-[#FDF8F1] animate-pop" id="activityModalCard">
+<!-- 弹窗主视觉 -->
+<div class="relative h-[236px] bg-gradient-to-b from-[#DCE6F0] to-[#F4E7D2] overflow-hidden">
+<div class="absolute inset-0 grid place-items-center">
+<img alt="Molly Tea autumn mascot with acorn staff and berry basket" class="h-[228px] w-auto object-contain animate-floaty" id="modalMascot" src="https://modao.cc/agent-py/media/generated_images/2026-10-08/74f6811362004707b763426a9ea33a0a.png"/>
+</div>
+<iconify-icon class="absolute left-4 top-8 text-[26px] text-[#C99A5E]/60" icon="solar:leaf-bold"></iconify-icon>
+<iconify-icon class="absolute right-6 top-20 text-[20px] text-[#D98A4E]/50" icon="solar:leaf-bold"></iconify-icon>
+<button class="absolute right-4 top-3 w-7 h-7 rounded-full bg-white/80 grid place-items-center" onclick="closeActivityModal()">
+<iconify-icon class="text-[18px] text-[#6B6152]" icon="solar:close-circle-linear"></iconify-icon>
+</button>
+</div>
+<div class="px-5 pb-5 -mt-6 relative" style="opacity: 1;">
+<p class="mt-3 text-center text-[10px] text-[#B9AB95]">
+          活动规则详见 <a class="font-bold text-[#7B8B4A] underline underline-offset-2" href="rules.html">《秋日限定打卡活动规则》</a>
+</p><div class="rounded-[24px] bg-white px-4 py-4 shadow-[0_14px_30px_-20px_rgba(90,70,40,0.6)]" style="opacity: 1; padding: 9px 16px;">
+<p class="text-center text-[10px] font-bold tracking-[0.22em] text-[#B9AB95]" style="opacity: 1;">MOLLY TEA AUTUMN</p>
+<h2 class="mt-1 text-center text-[21px] font-black text-[#3A3226]">秋日打卡计划</h2>
+<p class="mt-1 text-center text-[11px] font-bold text-[#7B8B4A]">活动时间：9 月 15 日 - 10 月 31 日</p>
+<p class="mt-1.5 text-center text-[11.5px] leading-relaxed text-[#8B7F6C]">
+            每天来打个卡，攒下的积分和奖励<br/>会像落叶一样，一片片攒进你的口袋 🍂
+          </p>
+<div class="mt-4 grid grid-cols-3 gap-2">
+<div class="rounded-2xl bg-[#F4F7EC] py-2.5 text-center">
+<p class="text-[15px] font-black text-[#7B8B4A]">+1</p>
+<p class="text-[9.5px] text-[#8B7F6C] mt-0.5">每日积分</p>
+</div>
+<div class="rounded-2xl bg-[#FDF3E6] py-2.5 text-center">
+<p class="text-[15px] font-black text-[#D98A4E]">15 天</p>
+<p class="text-[9.5px] text-[#8B7F6C] mt-0.5">免费新品 1 杯</p>
+</div>
+<div class="rounded-2xl bg-[#F6EAF0] py-2.5 text-center">
+<p class="text-[15px] font-black text-[#B5503F]">30 天</p>
+<p class="text-[9.5px] text-[#8B7F6C] mt-0.5">第 30 天后赠周边</p>
+</div>
+</div>
+<p class="hidden mt-2 text-center text-[10.5px] font-semibold text-[#B5503F]" id="modalGiftStatus">🎁 秋日周边开放赠送中 · 每店限定 100 份</p>
+<a class="mt-4 flex items-center justify-center gap-1 h-10 rounded-full bg-[#7B8B4A] text-[13px] font-extrabold text-white" href="activity.html" style="opacity: 1;">
+            立即进入活动页
+            <iconify-icon class="text-[13px]" icon="solar:alt-arrow-right-bold"></iconify-icon>
+</a>
+<button class="mt-2 w-full h-8 rounded-full text-[11px] font-semibold text-[#A99B87]" onclick="closeActivityModal()">先看看，稍后再来</button>
+<div class="mt-2.5 rounded-2xl bg-[#FBF6EF] px-3 py-2.5 text-left">
+<p class="text-[10px] font-bold text-[#8A6A3D]">演示控制：周边奖励「待解锁 / 开放赠送」状态切换</p>
+<div class="mt-2 grid grid-cols-2 gap-2">
+<button class="h-8 rounded-full bg-[#F7EBEE] text-[10.5px] font-bold text-[#B5503F]" onclick="setRewardStage('pre')">活动前 30 天 · 待解锁</button>
+<button class="h-8 rounded-full bg-[#B5503F] text-[10.5px] font-bold text-white" onclick="setRewardStage('live')">第 30 天之后 · 开放赠送</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  const MOLLY_KEY = 'molly_autumn_checkin_2026';
+
+  function defaultMollyState() {
+    return { checkedDays: 14, todayChecked: false, points: 14, lastDay: '' };
+  }
+
+  function loadMollyState() {
+    try {
+      const raw = localStorage.getItem(MOLLY_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed.checkedDays === 'number' && typeof parsed.points === 'number') {
+          return parsed;
+        }
+      }
+    } catch (err) {
+      /* 隐私模式下忽略 */
+    }
+    return defaultMollyState();
+  }
+
+  const modal = document.getElementById('activityModal');
+
+  function openActivityModal() {
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function closeActivityModal() {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  function syncHomeNumbers() {
+    // 清空并重新初始化演示状态，保证打开页面即回到「累计 14 天 / 14 积分」初始态
+    try {
+      localStorage.removeItem(MOLLY_KEY);
+      localStorage.removeItem('molly_autumn_extra_2026');
+    } catch (err) {
+      /* 隐私模式下忽略 */
+    }
+    const state = loadMollyState();
+    const days = document.getElementById('modalDays');
+    const points = document.getElementById('modalPoints');
+    const homePoints = document.getElementById('homePoints');
+    if (days) { days.textContent = state.checkedDays; }
+    if (points) { points.textContent = state.points; }
+    if (homePoints) { homePoints.textContent = state.points; }
+    syncGiftStatus();
+  }
+
+  // 弹窗内的周边口径随演示阶段同步：开放赠送时显示赠送中/已赠完，否则不显示
+  function syncGiftStatus() {
+    const el = document.getElementById('modalGiftStatus');
+    if (!el) { return; }
+    let stage = 'pre';
+    let stock = 100;
+    try {
+      stage = localStorage.getItem('molly_autumn_reward_stage_2026') || 'pre';
+      const raw = localStorage.getItem('molly_autumn_gift_stock_2026');
+      const value = parseInt(raw, 10);
+      if (!isNaN(value) && value >= 0 && value <= 100) {
+        stock = value;
+      }
+    } catch (err) {
+      /* 隐私模式下忽略 */
+    }
+    if (stage === 'live' && stock > 0) {
+      el.textContent = '🎁 秋日周边开放赠送中 · 每店限定 100 份 · 剩余 ' + stock + ' 份';
+      el.classList.remove('hidden');
+    } else if (stage === 'live') {
+      el.textContent = '🎁 万象城店秋日周边已赠完（100 份已全部送出）';
+      el.classList.remove('hidden');
+    } else {
+      el.classList.add('hidden');
+    }
+  }
+
+  syncHomeNumbers();
+
+  // 进入小程序后自动弹出活动弹窗，营造“打开小程序即弹窗”的入口体验
+  window.addEventListener('load', function () {
+    syncHomeNumbers();
+    setTimeout(function () {
+      openActivityModal();
+    }, 700);
+  });
+
+  // 演示控制：切换周边奖励阶段；切到「开放赠送」时余量重置为 100 份
+  function setRewardStage(stage) {
+    try {
+      localStorage.setItem('molly_autumn_reward_stage_2026', stage);
+      if (stage === 'live') {
+        localStorage.setItem('molly_autumn_gift_stock_2026', '100');
+      }
+    } catch (err) {
+      /* 隐私模式下忽略 */
+    }
+    syncGiftStatus();
+  }
+</script>
+<div id="imt-webext"></div></body><div id="imt-webext"></div></html>
